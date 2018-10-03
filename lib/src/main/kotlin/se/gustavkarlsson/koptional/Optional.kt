@@ -1,4 +1,4 @@
-package se.gustavkarlsson.se.koptional
+package se.gustavkarlsson.koptional
 
 sealed class Optional<out T : Any> {
 
