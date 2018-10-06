@@ -2,9 +2,7 @@ package se.gustavkarlsson.koptional
 
 import assertk.assert
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFalse
 import assertk.assertions.isNotEqualTo
-import assertk.assertions.isTrue
 import org.junit.Test
 
 class OptionalTest {
