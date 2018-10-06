@@ -86,7 +86,3 @@ class Present<out T : Any>(override val value: T) : Optional<T>() {
 
     override fun toString(): String = "Present[$value]"
 }
-
-fun <T : Any> optionalOf(value: T?): Optional<T> = if (value == null) Absent else Present(value)
-
-fun <T : Any> T?.toOptional(): Optional<T> = optionalOf(this)
