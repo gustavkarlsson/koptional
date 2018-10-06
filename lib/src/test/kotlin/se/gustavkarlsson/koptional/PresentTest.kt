@@ -1,6 +1,7 @@
 package se.gustavkarlsson.koptional
 
 import assertk.assert
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
@@ -31,9 +32,23 @@ class PresentTest {
     }
 
     @Test
-    fun unsafeAbsent() {
+    fun isAbsent() {
         val result = present.isAbsent
         assert(result).isFalse()
+    }
+
+    @Test
+    fun ifPresent() {
+        var wasRun = false
+        present.ifPresent { wasRun = true }
+        assert(wasRun).isTrue()
+    }
+
+    @Test
+    fun ifAbsent() {
+        var wasRun = false
+        present.ifAbsent { wasRun = true }
+        assert(wasRun).isFalse()
     }
 
     @Test
@@ -94,6 +109,12 @@ class PresentTest {
     fun combineWithAbsentNull() {
         val result = present.combineWith(Absent) { _, _ -> null }
         assert(result).isEqualTo(Absent)
+    }
+
+    @Test
+    fun toStringTest() {
+        val result = present.toString()
+        assert(result).contains(inner)
     }
 
     @Test

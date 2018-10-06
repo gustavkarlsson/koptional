@@ -30,9 +30,23 @@ class AbsentTest {
     }
 
     @Test
-    fun unsafeAbsent() {
+    fun isAbsent() {
         val result = absent.isAbsent
         assert(result).isTrue()
+    }
+
+    @Test
+    fun ifPresent() {
+        var wasRun = false
+        absent.ifPresent { wasRun = true }
+        assert(wasRun).isFalse()
+    }
+
+    @Test
+    fun ifAbsent() {
+        var wasRun = false
+        absent.ifAbsent { wasRun = true }
+        assert(wasRun).isTrue()
     }
 
     @Test
@@ -93,6 +107,11 @@ class AbsentTest {
     fun combineWithAbsentNull() {
         val result = absent.combineWith(Absent) { _, _ -> null }
         assert(result).isEqualTo(Absent)
+    }
+
+    @Test
+    fun toStringTest() {
+        absent.toString()
     }
 
     @Test
