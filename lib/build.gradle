@@ -6,8 +6,15 @@ apply plugin: "jacoco"
 sourceCompatibility = "1.6"
 targetCompatibility = "1.6"
 
-group = "se.gustavkarlsson.koptional"
-version = scmVersion.version
+task sourcesJar(type: Jar) {
+    classifier = "sources"
+    from sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 
 jacocoTestReport {
     reports {
