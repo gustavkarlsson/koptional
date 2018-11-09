@@ -5,6 +5,7 @@ import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
+import assertk.fail
 import org.junit.Test
 
 class PresentTest {
@@ -20,8 +21,8 @@ class PresentTest {
     }
 
     @Test
-    fun unsafeValue() {
-        val result = present.unsafeValue
+    fun valueUnsafe() {
+        val result = present.valueUnsafe
         assert(result).isEqualTo(inner)
     }
 
@@ -132,6 +133,12 @@ class PresentTest {
     @Test
     fun destructuring() {
         val (result) = present
+        assert(result).isEqualTo(inner)
+    }
+
+    @Test
+    fun valueOr() {
+        val result = present.valueOr { fail("This block should never run") }
         assert(result).isEqualTo(inner)
     }
 }

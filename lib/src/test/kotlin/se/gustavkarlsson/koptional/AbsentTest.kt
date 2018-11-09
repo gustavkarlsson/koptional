@@ -19,8 +19,8 @@ class AbsentTest {
     }
 
     @Test(expected = NoSuchElementException::class)
-    fun unsafeValue() {
-        absent.unsafeValue
+    fun valueUnsafe() {
+        absent.valueUnsafe
     }
 
     @Test
@@ -130,5 +130,11 @@ class AbsentTest {
     fun destructuring() {
         val (result) = absent
         assert(result).isNull()
+    }
+
+    @Test
+    fun valueOr() {
+        val result = absent.valueOr { other }
+        assert(result).isEqualTo(other)
     }
 }

@@ -48,9 +48,10 @@ Get the wrapped value:
 
 ```kotlin
 val myOptional = optionalOf("something")
-myOptional.value         // String?
-myOptional.unsafeValue   // String or throws
-val (value) = myOptional // String?
+myOptional.value               // String?
+myOptional.valueUnsafe         // String or throws
+myOptional.valueOr { "other" } // String
+val (value) = myOptional       // String?
 ```
 
 Inspect contents

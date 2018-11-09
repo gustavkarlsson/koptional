@@ -4,7 +4,7 @@ sealed class Optional<out T : Any> {
 
     abstract val value: T?
 
-    abstract val unsafeValue: T
+    abstract val valueUnsafe: T
 
     abstract val isPresent: Boolean
 
@@ -36,7 +36,7 @@ object Absent : Optional<Nothing>() {
 
     override val value: Nothing? get() = null
 
-    override val unsafeValue: Nothing get() = throw NoSuchElementException("Value is null")
+    override val valueUnsafe: Nothing get() = throw NoSuchElementException("Value is null")
 
     override val isPresent: Boolean get() = false
 
@@ -62,7 +62,7 @@ object Absent : Optional<Nothing>() {
 
 data class Present<out T : Any>(override val value: T) : Optional<T>() {
 
-    override val unsafeValue: T get() = value
+    override val valueUnsafe: T get() = value
 
     override val isPresent: Boolean get() = true
 
@@ -97,3 +97,5 @@ data class Present<out T : Any>(override val value: T) : Optional<T>() {
 
     override fun toString(): String = "Present[$value]"
 }
+
+fun <T : Any> Optional<T>.valueOr(other: () -> T): T = value ?: other()
