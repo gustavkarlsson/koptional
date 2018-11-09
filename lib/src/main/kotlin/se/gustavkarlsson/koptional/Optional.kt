@@ -29,7 +29,7 @@ sealed class Optional<out T : Any> {
             Absent
     }
 
-    operator fun component1(): T? = value
+    open operator fun component1(): T? = value
 }
 
 object Absent : Optional<Nothing>() {
@@ -60,7 +60,7 @@ object Absent : Optional<Nothing>() {
     override fun toString(): String = "Absent"
 }
 
-class Present<out T : Any>(override val value: T) : Optional<T>() {
+data class Present<out T : Any>(override val value: T) : Optional<T>() {
 
     override val unsafeValue: T get() = value
 
@@ -93,17 +93,6 @@ class Present<out T : Any>(override val value: T) : Optional<T>() {
         return other.map { otherValue ->
             combiner(value, otherValue)
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        other as Present<*>
-        return value == other.value
-    }
-
-    override fun hashCode(): Int {
-        return value.hashCode()
     }
 
     override fun toString(): String = "Present[$value]"

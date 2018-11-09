@@ -33,6 +33,7 @@ Create an Optional:
 
 ```kotlin
                                // Declared type      Actual type
+absent<String>()               // Optional<String>   Absent
 optionalOf("something")        // Optional<String>   Present
 optionalOf(null)               // Optional<Nothing>  Absent
 

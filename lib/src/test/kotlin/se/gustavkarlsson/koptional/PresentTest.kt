@@ -130,7 +130,7 @@ class PresentTest {
     }
 
     @Test
-    fun component1() {
+    fun destructuring() {
         val (result) = present
         assert(result).isEqualTo(inner)
     }

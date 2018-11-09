@@ -7,6 +7,12 @@ import org.junit.Test
 class CreationTest {
 
     @Test
+    fun absent() {
+        val result = absent<String>()
+        assert(result).isEqualTo(Absent)
+    }
+
+    @Test
     fun optionalOfValue() {
         val result = optionalOf("test")
         assert(result).isEqualTo(Present("test"))

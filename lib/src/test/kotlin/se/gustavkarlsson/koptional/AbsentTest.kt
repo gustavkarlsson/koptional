@@ -127,7 +127,7 @@ class AbsentTest {
     }
 
     @Test
-    fun component1() {
+    fun destructuring() {
         val (result) = absent
         assert(result).isNull()
     }
