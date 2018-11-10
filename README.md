@@ -71,7 +71,7 @@ myOptional.filter { it.length > 5 } // Absent if condition fails
 myOptional.map { "I like $it" } // Also allows for null return values
 myOptional.flatMap { returnsOptional(it) } // use wrapped value to produce new Optional
 myOptional.combineWith(otherOptional) { my, other -> my + optional } // Also allows for null return values
-myOptional.cast<CharSequence>() // Absent if casting fails
+myOptional.cast<CharSequence>() // Absent if casting not possible
 ```
 
 ## Download
