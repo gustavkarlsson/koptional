@@ -11,7 +11,7 @@ class ContractsTest {
     @Test
     fun isPresent() {
         if (optional.isPresent()) {
-            takeAny(optional.value)
+            TODO("takeAny(optional.value)")
         }
     }
 
