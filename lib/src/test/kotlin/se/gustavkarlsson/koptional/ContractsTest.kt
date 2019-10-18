@@ -1,28 +1,48 @@
 package se.gustavkarlsson.koptional
 
-import org.junit.Test
 import kotlin.contracts.ExperimentalContracts
 
+private val present: Present<Any> = Present("foobar")
+private val optional: Optional<Any> = present
+
+@Suppress("unused")
 @ExperimentalContracts
-class ContractsTest {
-
-    private val optional: Optional<Any> = Present("foobar")
-
-    @Test
-    fun isPresent() {
-        if (optional.isPresent()) {
-            TODO("takeAny(optional.value)")
-        }
+fun `only needs to compile`() {
+    if (optional.isPresent()) {
+        TODO("takeAny(optional.value)")
     }
 
-    @Test
-    fun isAbsent() {
-        if (optional.isAbsent()) {
-            takeNothing(optional.value)
-        }
+    if (optional.isAbsent()) {
+        takeNothing(optional.value)
+    }
+
+    val a: String
+    present.ifPresent {
+        a = "foo"
+        takeAny(a)
+    }
+
+    val b: String
+    optional.ifPresent {
+        b = "foobar"
+        takeAny(b)
+    }
+
+    val c: String
+    Absent.ifAbsent {
+        c = "foo"
+        takeAny(c)
+    }
+
+    val d: String
+    optional.ifAbsent {
+        d = "foobar"
+        takeAny(d)
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 private fun takeAny(any: Any) = Unit
 
+@Suppress("UNUSED_PARAMETER")
 private fun takeNothing(nothing: Nothing?) = Unit

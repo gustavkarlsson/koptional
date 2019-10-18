@@ -6,7 +6,9 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import org.junit.Test
+import kotlin.contracts.ExperimentalContracts
 
+@ExperimentalContracts
 class AbsentTest {
 
     private val other = "bar"

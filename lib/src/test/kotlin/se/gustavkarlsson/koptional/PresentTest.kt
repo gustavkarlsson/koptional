@@ -7,7 +7,9 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import assertk.fail
 import org.junit.Test
+import kotlin.contracts.ExperimentalContracts
 
+@ExperimentalContracts
 class PresentTest {
 
     private val inner = "foo"

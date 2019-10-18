@@ -1,6 +1,7 @@
 package se.gustavkarlsson.koptional
 
 import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 sealed class Optional<out T : Any> {
@@ -9,15 +10,11 @@ sealed class Optional<out T : Any> {
 
     abstract val valueUnsafe: T
 
-    @Deprecated(message = "Property removed in favor of function", replaceWith = ReplaceWith("isPresent()"))
+    @Deprecated(message = "Property deprecated in favor of function", replaceWith = ReplaceWith("isPresent()"))
     abstract val isPresent: Boolean
 
-    @Deprecated(message = "Property removed in favor of function", replaceWith = ReplaceWith("isAbsent()"))
+    @Deprecated(message = "Property deprecated in favor of function", replaceWith = ReplaceWith("isAbsent()"))
     abstract val isAbsent: Boolean
-
-    abstract fun ifPresent(consumer: (T) -> Unit): Optional<T>
-
-    abstract fun ifAbsent(action: () -> Unit): Optional<T>
 
     abstract fun filter(predicate: (T) -> Boolean): Optional<T>
 
@@ -46,10 +43,6 @@ object Absent : Optional<Nothing>() {
 
     override val isAbsent: Boolean get() = true
 
-    override fun ifPresent(consumer: (Nothing) -> Unit) = this
-
-    override fun ifAbsent(action: () -> Unit): Absent = also { action() }
-
     override fun filter(predicate: (Nothing) -> Boolean): Optional<Nothing> = this
 
     override fun <R : Any> map(mapper: (Nothing) -> R?): Optional<R> = this
@@ -68,10 +61,6 @@ data class Present<out T : Any>(override val value: T) : Optional<T>() {
     override val isPresent: Boolean get() = true
 
     override val isAbsent: Boolean get() = false
-
-    override fun ifPresent(consumer: (T) -> Unit): Present<T> = also { consumer(value) }
-
-    override fun ifAbsent(action: () -> Unit) = this
 
     override fun filter(predicate: (T) -> Boolean): Optional<T> =
         if (predicate(value))
@@ -109,4 +98,36 @@ fun <T: Any> Optional<T>.isAbsent(): Boolean {
         returns(false) implies (this@isAbsent is Present<T>)
     }
     return this is Absent
+}
+
+@ExperimentalContracts
+inline fun <T: Any> Optional<T>.ifPresent(consumer: (T) -> Unit): Optional<T> {
+    contract {
+        callsInPlace(consumer, InvocationKind.AT_MOST_ONCE)
+    }
+    return this.also { if (this is Present) consumer(value) }
+}
+
+@ExperimentalContracts
+inline fun <T: Any> Present<T>.ifPresent(consumer: (T) -> Unit): Present<T> {
+    contract {
+        callsInPlace(consumer, InvocationKind.EXACTLY_ONCE)
+    }
+    return this.also { consumer(value) }
+}
+
+@ExperimentalContracts
+inline fun <T: Any> Optional<T>.ifAbsent(action: () -> Unit): Optional<T> {
+    contract {
+        callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+    }
+    return this.also { if (this is Absent) action() }
+}
+
+@ExperimentalContracts
+inline fun Absent.ifAbsent(action: () -> Unit): Absent {
+    contract {
+        callsInPlace(action, InvocationKind.EXACTLY_ONCE)
+    }
+    return this.also { action() }
 }
