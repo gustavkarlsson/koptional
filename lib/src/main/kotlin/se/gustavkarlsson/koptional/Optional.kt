@@ -1,13 +1,18 @@
 package se.gustavkarlsson.koptional
 
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
+
 sealed class Optional<out T : Any> {
 
     abstract val value: T?
 
     abstract val valueUnsafe: T
 
+    @Deprecated(message = "Property removed in favor of function", replaceWith = ReplaceWith("isPresent()"))
     abstract val isPresent: Boolean
 
+    @Deprecated(message = "Property removed in favor of function", replaceWith = ReplaceWith("isAbsent()"))
     abstract val isAbsent: Boolean
 
     abstract fun ifPresent(consumer: (T) -> Unit): Optional<T>
@@ -87,3 +92,21 @@ data class Present<out T : Any>(override val value: T) : Optional<T>() {
 }
 
 fun <T : Any> Optional<T>.valueOr(other: () -> T): T = value ?: other()
+
+@ExperimentalContracts
+fun <T: Any> Optional<T>.isPresent(): Boolean {
+    contract {
+        returns(true) implies (this@isPresent is Present<T>)
+        returns(false) implies (this@isPresent is Absent)
+    }
+    return this is Present
+}
+
+@ExperimentalContracts
+fun <T: Any> Optional<T>.isAbsent(): Boolean {
+    contract {
+        returns(true) implies (this@isAbsent is Absent)
+        returns(false) implies (this@isAbsent is Present<T>)
+    }
+    return this is Absent
+}
