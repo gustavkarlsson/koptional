@@ -4,6 +4,10 @@ sealed class Optional<out T : Any> {
 
     abstract val value: T?
 
+    @Deprecated(
+        message = "Useless",
+        replaceWith = ReplaceWith("value!!")
+    )
     abstract val valueUnsafe: T
 
     abstract val isPresent: Boolean
